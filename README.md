@@ -1,11 +1,12 @@
 # Aliyun api gateway request signature package by go
 
-[![Github License](https://badgen.net/github/license/sliveryou/aliyun-api-gateway-sign)](https://github.com/sliveryou/aliyun-api-gateway-sign/blob/master/LICENSE)
+[![Github License](https://img.shields.io/github/license/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/blob/master/LICENSE)
 [![Go Doc](https://godoc.org/github.com/sliveryou/aliyun-api-gateway-sign?status.svg)](https://pkg.go.dev/github.com/sliveryou/aliyun-api-gateway-sign)
 [![Go Report](https://goreportcard.com/badge/github.com/sliveryou/aliyun-api-gateway-sign)](https://goreportcard.com/report/github.com/sliveryou/aliyun-api-gateway-sign)
-[![Github Latest Release](https://badgen.net/github/release/sliveryou/aliyun-api-gateway-sign)](https://github.com/sliveryou/aliyun-api-gateway-sign/releases)
-[![Github Latest Tag](https://badgen.net/github/tag/sliveryou/aliyun-api-gateway-sign)](https://github.com/sliveryou/aliyun-api-gateway-sign/tags)
-[![Github Stars](https://badgen.net/github/stars/sliveryou/aliyun-api-gateway-sign)](https://github.com/sliveryou/aliyun-api-gateway-sign/stargazers)
+[![Github Latest Release](https://img.shields.io/github/release/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/releases/latest)
+[![Github Latest Tag](https://img.shields.io/github/tag/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/tags)
+[![Github Stars](https://img.shields.io/github/stars/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/stargazers)
+![Github Visitors](https://visitor-badge.glitch.me/badge?page_id=https://github.com/sliveryou/aliyun-api-gateway-sign)
 
 For signature methods, see: [client signature documentation](https://help.aliyun.com/document_detail/29475.html)
 
