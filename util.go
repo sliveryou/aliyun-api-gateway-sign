@@ -22,26 +22,31 @@ func getSortKeys(m map[string][]string) []string {
 	return keys
 }
 
+// CurrentTimeMillis returns the millisecond representation of the current time.
 func CurrentTimeMillis() string {
 	t := time.Now().UnixNano() / 1000000
 	return strconv.FormatInt(t, 10)
 }
 
+// CurrentGMTDate returns the GMT date representation of the current time.
 func CurrentGMTDate() string {
 	return time.Now().UTC().Format(http.TimeFormat)
 }
 
+// UUID4 returns random generated UUID string.
 func UUID4() string {
 	u := uuid.NewV4()
 	return u.String()
 }
 
+// HmacSHA256 returns the string encrypted with HmacSHA256 method.
 func HmacSHA256(b []byte, key []byte) string {
 	h := hmac.New(sha256.New, key)
 	h.Write(b)
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
+// MD5 returns the string hashed with MD5 method.
 func Md5(b []byte) string {
 	m := md5.New()
 	m.Write(b)

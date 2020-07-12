@@ -30,12 +30,12 @@ const (
 
 // HTTP method values.
 const (
-	HTTPMethodGet = "GET"
-	HTTPMethodPost = "POST"
-	HTTPMethodPut = "PUT"
-	HTTPMethodDelete = "DELETE"
-	HTTPMethodPatch = "PATCH"
-	HTTPMethodHead = "HEAD"
+	HTTPMethodGet     = "GET"
+	HTTPMethodPost    = "POST"
+	HTTPMethodPut     = "PUT"
+	HTTPMethodDelete  = "DELETE"
+	HTTPMethodPatch   = "PATCH"
+	HTTPMethodHead    = "HEAD"
 	HTTPMethodOptions = "OPTIONS"
 )
 
@@ -45,4 +45,3 @@ const (
 	defaultAccept    = "*/*"
 	defaultLF        = "\n"
 )
-
