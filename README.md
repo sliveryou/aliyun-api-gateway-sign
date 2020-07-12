@@ -1,7 +1,8 @@
 # Aliyun api gateway request signature package by go
 
 [![Github License](https://badgen.net/github/license/sliveryou/aliyun-api-gateway-sign)](https://github.com/sliveryou/aliyun-api-gateway-sign/blob/master/LICENSE)
-[![Go Report Card](https://goreportcard.com/badge/github.com/sliveryou/aliyun-api-gateway-sign)](https://goreportcard.com/report/github.com/sliveryou/aliyun-api-gateway-sign)
+[![Go Doc](https://godoc.org/github.com/sliveryou/aliyun-api-gateway-sign?status.svg)](https://pkg.go.dev/github.com/sliveryou/aliyun-api-gateway-sign)
+[![Go Report](https://goreportcard.com/badge/github.com/sliveryou/aliyun-api-gateway-sign)](https://goreportcard.com/report/github.com/sliveryou/aliyun-api-gateway-sign)
 [![Github Latest Release](https://badgen.net/github/release/sliveryou/aliyun-api-gateway-sign)](https://github.com/sliveryou/aliyun-api-gateway-sign/releases)
 [![Github Latest Tag](https://badgen.net/github/tag/sliveryou/aliyun-api-gateway-sign)](https://github.com/sliveryou/aliyun-api-gateway-sign/tags)
 [![Github Stars](https://badgen.net/github/stars/sliveryou/aliyun-api-gateway-sign)](https://github.com/sliveryou/aliyun-api-gateway-sign/stargazers)

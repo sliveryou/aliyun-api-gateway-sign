@@ -31,7 +31,7 @@ func Sign(req *http.Request, appKey, appKeySecret string) error {
 			return err
 		}
 		req.Body = ioutil.NopCloser(bytes.NewBuffer(b))
-		req.Header.Set(HTTPHeaderContentMD5, Md5(b))
+		req.Header.Set(HTTPHeaderContentMD5, MD5(b))
 	}
 
 	stringToSign, err := buildStringToSign(req)

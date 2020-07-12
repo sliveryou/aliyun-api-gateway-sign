@@ -47,7 +47,7 @@ func HmacSHA256(b []byte, key []byte) string {
 }
 
 // MD5 returns the string hashed with MD5 method.
-func Md5(b []byte) string {
+func MD5(b []byte) string {
 	m := md5.New()
 	m.Write(b)
 	return base64.StdEncoding.EncodeToString(m.Sum(nil))
