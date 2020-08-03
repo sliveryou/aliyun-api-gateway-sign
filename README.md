@@ -6,7 +6,6 @@
 [![Github Latest Release](https://img.shields.io/github/release/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/releases/latest)
 [![Github Latest Tag](https://img.shields.io/github/tag/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/tags)
 [![Github Stars](https://img.shields.io/github/stars/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/stargazers)
-![Github Visitors](https://visitor-badge.glitch.me/badge?page_id=https://github.com/sliveryou/aliyun-api-gateway-sign)
 
 For signature methods, see: [client signature documentation](https://help.aliyun.com/document_detail/29475.html)
 
