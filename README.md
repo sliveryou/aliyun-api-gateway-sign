@@ -11,8 +11,9 @@ For signature methods, see: [client signature documentation](https://help.aliyun
 
 ## Installation
 
-```
-go get github.com/sliveryou/aliyun-api-gateway-sign
+Download package by using:
+```sh
+$ go get github.com/sliveryou/aliyun-api-gateway-sign
 ```
 
 ## Usage Example
