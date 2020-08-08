@@ -1,4 +1,4 @@
-# Aliyun api gateway request signature algorithm implemented by go
+# 阿里云 API 网关请求签名算法的 Go 实现
 
 *[English](README.md) ∙ [简体中文](README_zh-CN.md)*
 
@@ -9,17 +9,17 @@
 [![Github Latest Tag](https://img.shields.io/github/tag/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/tags)
 [![Github Stars](https://img.shields.io/github/stars/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/stargazers)
 
-For signature methods, see: [client signature documentation](https://help.aliyun.com/document_detail/29475.html)
+详细的签名算法, 请查看：[客户端签名说明文档](https://help.aliyun.com/document_detail/29475.html)
 
-## Installation
+## 安装
 
-Download package by using:
+使用如下命令下载并安装包：
 
 ```sh
 $ go get github.com/sliveryou/aliyun-api-gateway-sign
 ```
 
-## Usage Example
+## 使用示例
 
 ```golang
 package main
@@ -39,36 +39,36 @@ func main() {
 	var body string
 	var appKey, appKeySecret string
 
-	// Prepare a HTTP request.
+	// 先创建一个 HTTP 请求对象
 	req, err := http.NewRequest(sign.HTTPMethodPost, url, strings.NewReader(body))
 	if err != nil {
-		// Handle err.
+		// 错误逻辑处理
 		panic(err)
 	}
-	// Set the request with headers.
+	// 设置请求的请求头
 	req.Header.Set(sign.HTTPHeaderAccept, sign.HTTPContentTypeJson)
 	req.Header.Set(sign.HTTPHeaderContentType, sign.HTTPContentTypeJson)
 
-	// Sign the request.
+	// 对请求使用签名函数进行签名
 	if err := sign.Sign(req, appKey, appKeySecret); err != nil {
 		panic(err)
 	}
 
-	// Show the dump request.
+	// 打印签名后请求的具体内容
 	dumpReq, err := httputil.DumpRequestOut(req, true)
 	if err != nil {
 		panic(err)
 	}
 	log.Println("\n" + string(dumpReq))
 
-	// Do the request.
+	// 发起请求
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		panic(err)
 	}
 	defer resp.Body.Close()
 
-	// Handle response.
+	// 处理返回的响应内容
 	content, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		panic(err)
