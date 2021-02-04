@@ -2,6 +2,7 @@ package sign
 
 import (
 	"bytes"
+	"context"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -53,11 +54,7 @@ func buildStringToSign(req *http.Request) (string, error) {
 	s += req.Header.Get(HTTPHeaderContentType) + defaultLF
 	s += req.Header.Get(HTTPHeaderDate) + defaultLF
 
-	headerStr, err := buildHeaderStringToSign(req)
-	if err != nil {
-		return "", err
-	}
-	s += headerStr
+	s += buildHeaderStringToSign(req)
 
 	paramStr, err := buildParamStringToSign(req)
 	if err != nil {
@@ -68,7 +65,7 @@ func buildStringToSign(req *http.Request) (string, error) {
 	return s, nil
 }
 
-func buildHeaderStringToSign(req *http.Request) (string, error) {
+func buildHeaderStringToSign(req *http.Request) string {
 	headerKeys := getSortKeys(req.Header)
 	headerCAs := make([]string, 0)
 	headerCAKeys := make([]string, 0)
@@ -81,28 +78,28 @@ func buildHeaderStringToSign(req *http.Request) (string, error) {
 	}
 
 	req.Header.Set(HTTPHeaderCASignatureHeaders, strings.Join(headerCAKeys, ","))
-	return strings.Join(headerCAs, ""), nil
+	return strings.Join(headerCAs, "")
 }
 
 func buildParamStringToSign(req *http.Request) (string, error) {
 	var err error
-	reqCopy := *req
+	reqClone := req.Clone(context.Background())
 	if req.Body != nil {
-		reqCopy.Body, err = req.GetBody()
+		reqClone.Body, err = req.GetBody()
 		if err != nil {
 			return "", err
 		}
 	}
 
-	err = reqCopy.ParseForm()
+	err = reqClone.ParseForm()
 	if err != nil {
 		return "", err
 	}
 
-	paramKeys := getSortKeys(reqCopy.Form)
+	paramKeys := getSortKeys(reqClone.Form)
 	paramList := make([]string, 0)
 	for _, key := range paramKeys {
-		value := reqCopy.Form.Get(key)
+		value := reqClone.Form.Get(key)
 		if value == "" {
 			paramList = append(paramList, key)
 		} else {
