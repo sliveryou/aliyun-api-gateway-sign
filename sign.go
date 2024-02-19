@@ -40,8 +40,8 @@ func Sign(req *http.Request, appKey, appKeySecret string) error {
 		return err
 	}
 
-	// log.Println("\n" + stringToSign + "\n")
 	req.Header.Set(HTTPHeaderCASignature, HmacSHA256([]byte(stringToSign), []byte(appKeySecret)))
+
 	return nil
 }
 
@@ -78,6 +78,7 @@ func buildHeaderStringToSign(req *http.Request) string {
 	}
 
 	req.Header.Set(HTTPHeaderCASignatureHeaders, strings.Join(headerCAKeys, ","))
+
 	return strings.Join(headerCAs, "")
 }
 
@@ -111,5 +112,6 @@ func buildParamStringToSign(req *http.Request) (string, error) {
 	if params != "" {
 		params = "?" + params
 	}
+
 	return req.URL.Path + params, nil
 }

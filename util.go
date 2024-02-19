@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"time"
 
-	uuid "github.com/satori/go.uuid"
+	"github.com/google/uuid"
 )
 
 func getSortKeys(m map[string][]string) []string {
@@ -18,13 +18,16 @@ func getSortKeys(m map[string][]string) []string {
 	for key := range m {
 		keys = append(keys, key)
 	}
+
 	sort.Strings(keys)
+
 	return keys
 }
 
 // CurrentTimeMillis returns the millisecond representation of the current time.
 func CurrentTimeMillis() string {
 	t := time.Now().UnixNano() / 1000000
+
 	return strconv.FormatInt(t, 10)
 }
 
@@ -35,14 +38,19 @@ func CurrentGMTDate() string {
 
 // UUID4 returns random generated UUID string.
 func UUID4() string {
-	u := uuid.NewV4()
+	u, err := uuid.NewRandom()
+	if err != nil {
+		return ""
+	}
+
 	return u.String()
 }
 
 // HmacSHA256 returns the string encrypted with HmacSHA256 method.
-func HmacSHA256(b []byte, key []byte) string {
+func HmacSHA256(b, key []byte) string {
 	h := hmac.New(sha256.New, key)
 	h.Write(b)
+
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
@@ -50,5 +58,6 @@ func HmacSHA256(b []byte, key []byte) string {
 func MD5(b []byte) string {
 	m := md5.New()
 	m.Write(b)
+
 	return base64.StdEncoding.EncodeToString(m.Sum(nil))
 }
