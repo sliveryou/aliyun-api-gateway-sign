@@ -9,7 +9,7 @@
 [![Github Latest Tag](https://img.shields.io/github/tag/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/tags)
 [![Github Stars](https://img.shields.io/github/stars/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/stargazers)
 
-详细的签名算法，请查看：[客户端签名说明文档](https://help.aliyun.com/document_detail/29475.html)
+详细的签名算法，请查看：[使用摘要签名认证方式调用 API](https://help.aliyun.com/document_detail/29475.html)
 
 ## 安装
 

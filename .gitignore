@@ -104,13 +104,9 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 ### JetBrains+all Patch ###
-# Ignore everything but code style settings and run configurations
-# that are supposed to be shared within teams.
+# Ignore everything
 
 .idea/*
-
-!.idea/codeStyles
-!.idea/runConfigurations
 
 ### macOS ###
 # General
@@ -172,3 +168,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/go,jetbrains+all,macos,windows
+
+### Project ###

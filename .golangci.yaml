@@ -108,7 +108,7 @@ linters:
     - contextcheck
     - decorder
     - dogsled
-    - dupl
+    # - dupl
     - dupword
     - durationcheck
     # - errcheck

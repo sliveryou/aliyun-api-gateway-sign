@@ -9,7 +9,7 @@
 [![Github Latest Tag](https://img.shields.io/github/tag/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/tags)
 [![Github Stars](https://img.shields.io/github/stars/sliveryou/aliyun-api-gateway-sign.svg?style=flat)](https://github.com/sliveryou/aliyun-api-gateway-sign/stargazers)
 
-For signature methods, see: [client signature documentation](https://help.aliyun.com/document_detail/29475.html)
+For signature methods, see: [using digital signature authentication to call api](https://help.aliyun.com/document_detail/29475.html)
 
 ## Installation
 

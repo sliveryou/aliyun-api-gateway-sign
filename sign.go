@@ -2,7 +2,7 @@ package sign
 
 import (
 	"bytes"
-	"context"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -10,9 +10,10 @@ import (
 
 // Sign will sign the request with appKey and appKeySecret.
 func Sign(req *http.Request, appKey, appKeySecret string) error {
-	req.Header.Set(HTTPHeaderCATimestamp, CurrentTimeMillis())
-	req.Header.Set(HTTPHeaderCANonce, UUID4())
 	req.Header.Set(HTTPHeaderCAKey, appKey)
+	req.Header.Set(HTTPHeaderCANonce, UUID4())
+	req.Header.Set(HTTPHeaderCASignatureMethod, defaultSignMethod)
+	req.Header.Set(HTTPHeaderCATimestamp, CurrentTimeMillis())
 
 	if req.Header.Get(HTTPHeaderAccept) == "" {
 		req.Header.Set(HTTPHeaderAccept, defaultAccept)
@@ -26,18 +27,24 @@ func Sign(req *http.Request, appKey, appKeySecret string) error {
 		req.Header.Set(HTTPHeaderUserAgent, defaultUserAgent)
 	}
 
-	if req.Body != nil && req.Header.Get(HTTPHeaderContentType) == HTTPContentTypeStream {
+	ct := req.Header.Get(HTTPHeaderContentType)
+	if req.Body != nil && ct != HTTPContentTypeForm &&
+		!strings.HasPrefix(ct, HTTPContentTypeMultipartFormWithBoundary) {
 		b, err := ioutil.ReadAll(req.Body)
 		if err != nil {
-			return err
+			return fmt.Errorf("read all request body err: %w", err)
 		}
+		if err := req.Body.Close(); err != nil {
+			return fmt.Errorf("request body close err: %w", err)
+		}
+
 		req.Body = ioutil.NopCloser(bytes.NewBuffer(b))
 		req.Header.Set(HTTPHeaderContentMD5, MD5(b))
 	}
 
 	stringToSign, err := buildStringToSign(req)
 	if err != nil {
-		return err
+		return fmt.Errorf("build string to sign err: %w", err)
 	}
 
 	req.Header.Set(HTTPHeaderCASignature, HmacSHA256([]byte(stringToSign), []byte(appKeySecret)))
@@ -46,61 +53,57 @@ func Sign(req *http.Request, appKey, appKeySecret string) error {
 }
 
 func buildStringToSign(req *http.Request) (string, error) {
-	s := ""
-	s += strings.ToUpper(req.Method) + defaultLF
+	var s strings.Builder
+	s.WriteString(strings.ToUpper(req.Method) + defaultLF)
 
-	s += req.Header.Get(HTTPHeaderAccept) + defaultLF
-	s += req.Header.Get(HTTPHeaderContentMD5) + defaultLF
-	s += req.Header.Get(HTTPHeaderContentType) + defaultLF
-	s += req.Header.Get(HTTPHeaderDate) + defaultLF
+	s.WriteString(req.Header.Get(HTTPHeaderAccept) + defaultLF)
+	s.WriteString(req.Header.Get(HTTPHeaderContentMD5) + defaultLF)
+	s.WriteString(req.Header.Get(HTTPHeaderContentType) + defaultLF)
+	s.WriteString(req.Header.Get(HTTPHeaderDate) + defaultLF)
 
-	s += buildHeaderStringToSign(req)
+	s.WriteString(buildHeaderStringToSign(req))
 
 	paramStr, err := buildParamStringToSign(req)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("build param string to sign err: %w", err)
 	}
-	s += paramStr
 
-	return s, nil
+	s.WriteString(paramStr)
+
+	return s.String(), nil
 }
 
 func buildHeaderStringToSign(req *http.Request) string {
-	headerKeys := getSortKeys(req.Header)
-	headerCAs := make([]string, 0)
-	headerCAKeys := make([]string, 0)
+	var builder strings.Builder
+	signHeaderKeys := make([]string, 0)
+	headerKeys := getSortKeys(req.Header, true)
 
 	for _, key := range headerKeys {
-		if strings.HasPrefix(http.CanonicalHeaderKey(key), HTTPHeaderCAPrefix) {
-			headerCAKeys = append(headerCAKeys, key)
-			headerCAs = append(headerCAs, key+":"+req.Header.Get(key)+defaultLF)
+		if _, ok := signHeaders[key]; ok {
+			signHeaderKeys = append(signHeaderKeys, key)
+			builder.WriteString(key + ":" + req.Header.Get(key) + defaultLF)
 		}
 	}
 
-	req.Header.Set(HTTPHeaderCASignatureHeaders, strings.Join(headerCAKeys, ","))
+	req.Header.Set(HTTPHeaderCASignatureHeaders, strings.Join(signHeaderKeys, defaultSep))
 
-	return strings.Join(headerCAs, "")
+	return builder.String()
 }
 
 func buildParamStringToSign(req *http.Request) (string, error) {
-	var err error
-	reqClone := req.Clone(context.Background())
-	if req.Body != nil {
-		reqClone.Body, err = req.GetBody()
-		if err != nil {
-			return "", err
-		}
-	}
-
-	err = reqClone.ParseForm()
+	clone, err := copyRequest(req)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("copy request err: %w", err)
 	}
 
-	paramKeys := getSortKeys(reqClone.Form)
+	if err := clone.ParseForm(); err != nil {
+		return "", fmt.Errorf("parse form err: %w", err)
+	}
+
+	paramKeys := getSortKeys(clone.Form)
 	paramList := make([]string, 0)
 	for _, key := range paramKeys {
-		value := reqClone.Form.Get(key)
+		value := clone.Form.Get(key)
 		if value == "" {
 			paramList = append(paramList, key)
 		} else {
@@ -113,5 +116,5 @@ func buildParamStringToSign(req *http.Request) (string, error) {
 		params = "?" + params
 	}
 
-	return req.URL.Path + params, nil
+	return clone.URL.Path + params, nil
 }
